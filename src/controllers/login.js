@@ -8,7 +8,7 @@ export async function Login(req, res) {
     const { email, contrasena, recordarme } = req.body;
 
     const [usuarios] = await pool.query(
-      "SELECT id, email, password FROM usuarios WHERE email = ?",
+      "SELECT id, email, password, rol FROM usuarios WHERE email = ? LIMIT 1",
       [email]
     );
 
@@ -33,6 +33,7 @@ export async function Login(req, res) {
       {
         sub: usuario.id,
         email: usuario.email,
+        rol: usuario.rol,
       },
       process.env.JWT_SECRET,
       {
