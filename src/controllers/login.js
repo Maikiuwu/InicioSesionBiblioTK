@@ -48,6 +48,14 @@ export async function Login(req, res) {
       maxAge: duracionCookie,
     });
 
+    // No es un límite de seguridad: solo le dice al front a qué app redirigir sin esperar /Sesion
+    res.cookie("bibliotk_rol", usuario.rol, {
+      httpOnly: false,
+      secure: false,
+      sameSite: "lax",
+      maxAge: duracionCookie,
+    });
+
     /*en produccion
     secure: true,
       sameSite: "none"*/
@@ -78,7 +86,7 @@ export function getCurrentSession(req, res) {
 
     return res.status(200).json({
       authenticated: true,
-      user,
+      user: { email: user.email, rol: user.rol },
     });
   } catch {
     return res.status(401).json({
@@ -90,6 +98,11 @@ export function getCurrentSession(req, res) {
 export function Logout(req, res) {
   res.clearCookie("token_acceso", {
     httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+  res.clearCookie("bibliotk_rol", {
+    httpOnly: false,
     secure: false,
     sameSite: "lax",
   });
