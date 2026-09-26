@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import routerBiblioTK from './router/routerBiblioTK.js';
 import { testConnection } from './config/db.js';
@@ -8,14 +9,19 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+
+const allowedOrigins = Object.entries(process.env)
+  .filter(([key, value]) => key.startsWith('ALLOWED_ORIGIN_') && value)
+  .map(([, origin]) => origin.trim());
+
 app.use(
-    cors({
-        origin: ["http://localhost:5173", "http://localhost:5174"],
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-    })
-);
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);;
 
 app.use('/BiblioTK', routerBiblioTK);
 

@@ -29,6 +29,8 @@ export async function Login(req, res) {
       ? 30 * 24 * 60 * 60 * 1000
       : 60 * 1000;
 
+    console.log("rol: ", usuario)
+    
     const token = jwt.sign(
       {
         sub: usuario.id,
@@ -40,6 +42,7 @@ export async function Login(req, res) {
         expiresIn: tiempoSesion,
       }
     );
+    console.log("Token generado:", token);
 
     res.cookie("token_acceso", token, {
       httpOnly: true,
@@ -52,6 +55,7 @@ export async function Login(req, res) {
     secure: true,
       sameSite: "none"*/
 
+    console.log("Sesión iniciada para el usuario:", usuario.email);
     return res.status(200).json({
       message: "Inicio de sesión exitoso",
     });
