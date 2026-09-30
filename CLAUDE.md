@@ -19,7 +19,7 @@ Parte del sistema BiblioTK (ver `../CLAUDE.md`). Valida credenciales y gestiona 
 | Método | Ruta | Controlador | Descripción |
 |---|---|---|---|
 | GET | `/BiblioTK/healthLogin` | inline | Health check |
-| POST | `/BiblioTK/Login` | `Login` | Body `{ email, contrasena, recordarme }` |
+| POST | `/BiblioTK/Login` | `Login` | Body `{ email, contrasena, recordarme }`. Responde `{ message, user: { email, rol } }` (lo mismo que `/Sesion`), así la landing redirige sin otra llamada |
 | GET | `/BiblioTK/Sesion` | `getCurrentSession` | Devuelve `{ authenticated: true, user: { email, rol } }` o 401 |
 | POST | `/BiblioTK/Logout` | `Logout` | Borra ambas cookies |
 
